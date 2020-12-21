@@ -43,7 +43,6 @@ function App() {
     <ChakraProvider>
       <CSSReset />
       <Box p="2rem" maxWidth="1200px" mx="auto" height="100%">
-        {/* <HookForm /> */}
         <Flex mb="1rem" pb="1rem" borderBottom="1px solid #e7eaf3">
           <Box width={[1 / 2]}>
             <Input

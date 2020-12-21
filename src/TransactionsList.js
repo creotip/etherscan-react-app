@@ -3,7 +3,6 @@ import { FixedSizeList as List } from 'react-window'
 import { Flex, Tooltip, Box, SimpleGrid, useClipboard } from '@chakra-ui/react'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { CopyIcon } from '@chakra-ui/icons'
-import dayjs from 'dayjs'
 
 const Row = ({ data, index, style }) => {
   const { timeStamp, from, to, value, confirmations } = data[index]
