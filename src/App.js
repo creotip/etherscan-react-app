@@ -56,24 +56,30 @@ function App() {
           </Button>
         </Flex>
 
-        <SimpleGrid
-          minChildWidth="120px"
-          columns={5}
-          spacing={10}
-          pr="1rem"
-          pb="1rem"
-          mb="1rem"
-          borderBottom="1px solid #e7eaf3"
-        >
-          <Box>#</Box>
-          <Box>timeStamp</Box>
-          <Box>from</Box>
-          <Box>to</Box>
-          <Box>value</Box>
-          <Box>confirmations</Box>
-        </SimpleGrid>
-        {isSolid(transactions) && (
-          <TransactionsList transactions={transactions} />
+        {isSolid(transactions) ? (
+          <>
+            <SimpleGrid
+              minChildWidth="120px"
+              columns={5}
+              spacing={10}
+              pr="1rem"
+              pb="1rem"
+              mb="1rem"
+              borderBottom="1px solid #e7eaf3"
+            >
+              <Box>#</Box>
+              <Box>timeStamp</Box>
+              <Box>from</Box>
+              <Box>to</Box>
+              <Box>value</Box>
+              <Box>confirmations</Box>
+            </SimpleGrid>
+            <TransactionsList transactions={transactions} />
+          </>
+        ) : (
+          <Box textAlign="center" mt="4rem">
+            No Data
+          </Box>
         )}
       </Box>
     </ChakraProvider>
