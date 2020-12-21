@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import {
-  ChakraProvider,
-  CSSReset,
   Box,
   Button,
   SimpleGrid,
   Flex,
   Input,
+  useToast,
 } from '@chakra-ui/react'
 import useFetch from 'use-http'
 import TransactionsList from './TransactionsList'
@@ -21,6 +20,7 @@ function App() {
   const [etheriumAddress, setEtheriumAddress] = useState(DEFAULT_ADDRESS)
   const [transactions, setTransactions] = useState(null)
   const { get, response, loading, error } = useFetch(API_BASE_URL)
+  const toast = useToast()
 
   useEffect(() => {
     createUrlToFetch()
@@ -37,52 +37,57 @@ function App() {
 
     if (response.message === 'OK') {
       setTransactions(response.result)
+    } else if (response.message === 'NOTOK') {
+      toast({
+        title: 'Warning',
+        description: 'Please add a valid etherium address.',
+        status: 'warning',
+        duration: 7000,
+        isClosable: true,
+      })
     }
   }
   return (
-    <ChakraProvider>
-      <CSSReset />
-      <Box p="2rem" maxWidth="1200px" mx="auto" height="100%">
-        <Flex mb="1rem" pb="1rem" borderBottom="1px solid #e7eaf3">
-          <Box width={[1 / 2]}>
-            <Input
-              value={etheriumAddress}
-              placeholder="Add etherium address"
-              onChange={(e) => setEtheriumAddress(e.target.value)}
-            />
-          </Box>
-          <Button onClick={getTransactions} isLoading={loading} mx="1rem">
-            Fetch Transactions
-          </Button>
-        </Flex>
+    <Box p="2rem" maxWidth="1200px" mx="auto" height="100%">
+      <Flex mb="1rem" pb="1rem" borderBottom="1px solid #e7eaf3">
+        <Box width={[1 / 2]}>
+          <Input
+            value={etheriumAddress}
+            placeholder="Add etherium address"
+            onChange={(e) => setEtheriumAddress(e.target.value)}
+          />
+        </Box>
+        <Button onClick={getTransactions} isLoading={loading} mx="1rem">
+          Fetch Transactions
+        </Button>
+      </Flex>
 
-        {isSolid(transactions) ? (
-          <>
-            <SimpleGrid
-              minChildWidth="120px"
-              columns={5}
-              spacing={10}
-              pr="1rem"
-              pb="1rem"
-              mb="1rem"
-              borderBottom="1px solid #e7eaf3"
-            >
-              <Box>#</Box>
-              <Box>timeStamp</Box>
-              <Box>from</Box>
-              <Box>to</Box>
-              <Box>value</Box>
-              <Box>confirmations</Box>
-            </SimpleGrid>
-            <TransactionsList transactions={transactions} />
-          </>
-        ) : (
-          <Box textAlign="center" mt="4rem">
-            No Data
-          </Box>
-        )}
-      </Box>
-    </ChakraProvider>
+      {isSolid(transactions) ? (
+        <>
+          <SimpleGrid
+            minChildWidth="120px"
+            columns={5}
+            spacing={10}
+            pr="1rem"
+            pb="1rem"
+            mb="1rem"
+            borderBottom="1px solid #e7eaf3"
+          >
+            <Box>#</Box>
+            <Box>timeStamp</Box>
+            <Box>from</Box>
+            <Box>to</Box>
+            <Box>value</Box>
+            <Box>confirmations</Box>
+          </SimpleGrid>
+          <TransactionsList transactions={transactions} />
+        </>
+      ) : (
+        <Box textAlign="center" mt="4rem">
+          No Data
+        </Box>
+      )}
+    </Box>
   )
 }
 
